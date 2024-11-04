@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceValidator {
-    public static List<String> validate(Class<?> candidate) {
+    public static List<String> validate(Class<?> candidate, String username) {
         List<String> errors = new ArrayList<>();
+        if (!isInUsernamePackage(candidate, username)) {
+            errors.add("Class is not in the correct package (expected " + username + candidate.getName());
+        }
         if (!isPublic(candidate)) {
             errors.add("Class is not public");
         }
@@ -29,6 +32,10 @@ public class ServiceValidator {
             errors.add("Class does not have a public static toStringue method returning a String, taking no parameters, and returning no exceptions");
         }
         return errors;
+    }
+
+    private static boolean isInUsernamePackage(Class<?> candidate, String username) {
+        return candidate.getPackageName().startsWith(username);
     }
 
     private static boolean isPublic(Class<?> candidate) {

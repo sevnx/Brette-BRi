@@ -30,4 +30,8 @@ public class BriProgrammer {
     public URLClassLoader getClassLoader() {
         return classLoader;
     }
+
+    public void setFtpPath(String ftpPath) throws MalformedURLException {
+        this.classLoader = new URLClassLoader(new URL[]{new URL(ftpPath)});
+    }
 }

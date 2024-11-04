@@ -38,6 +38,15 @@ public class AmatorComponent implements Component {
             response = new StringBuilder();
 
             response.append("Welcome " + login + "!");
+
+            if (ServiceRegistry.serviceNumber() == 0) {
+                response.append(System.lineSeparator());
+                response.append("No service available, please come back later.");
+                response.append(System.lineSeparator());
+                service.send(response.toString());
+                service.close();
+            }
+
             response.append(System.lineSeparator());
             response.append("Please select the service you want to access:");
             response.append(System.lineSeparator());
@@ -50,9 +59,6 @@ public class AmatorComponent implements Component {
             Class<? extends BriService> serviceClass = ServiceRegistry.getServiceClass(numService);
             BriService briService = serviceClass.getConstructor(Socket.class).newInstance(service.getClient());
             briService.run();
-
-
-
         } catch (Exception e) {
             LOGGER.severe("Unexpected error : " + e);
             service.send("An error occurred, please try again later.");

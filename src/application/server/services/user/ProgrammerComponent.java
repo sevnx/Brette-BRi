@@ -30,7 +30,7 @@ public class ProgrammerComponent implements Component {
 
             response = new StringBuilder();
 
-            response.append("Welcome " + login + "!");
+            response.append("Welcome ").append(login).append("!");
             response.append(System.lineSeparator());
             response.append("Choose an option:").append(System.lineSeparator());
             response.append("1 - Add a service").append(System.lineSeparator());
@@ -45,14 +45,40 @@ public class ProgrammerComponent implements Component {
                     response.append("Enter the service name: ");
                     service.send(response.toString());
                     String serviceName = service.read();
-                    ServiceRegistry.addService(programmer.getClassLoader().loadClass(serviceName));
+                    try {
+                        ServiceRegistry.addService(programmer.getClassLoader().loadClass(serviceName), programmer.getLogin());
+                    } catch (Exception e) {
+                        LOGGER.severe("Error while adding service: " + e);
+                        service.send("Failed to add service : " + e.getMessage());
+                    }
                 }
-                case 2 -> {}
-                case 3 -> {}
+                case 2 -> {
+                    response = new StringBuilder();
+                    response.append("Enter the service name: ");
+                    service.send(response.toString());
+                    String serviceName = service.read();
+                    try {
+                        ServiceRegistry.modifyService(programmer.getClassLoader().loadClass(serviceName), programmer.getLogin());
+                    } catch (Exception e) {
+                        LOGGER.severe("Error while updating service: " + e);
+                        service.send("Failed to update service : " + e.getMessage());
+                    }
+                }
+                case 3 -> {
+                    response = new StringBuilder();
+                    response.append("Enter the new FTP host: ");
+                    service.send(response.toString());
+                    String ftpUrl = service.read();
+                    try {
+                        programmer.setFtpPath(ftpUrl);
+                        service.send("FTP host changed successfully.");
+                    } catch (Exception e) {
+                        LOGGER.severe("Error while changing FTP host: " + e);
+                        service.send("Failed to change FTP host.");
+                    }
+                }
                 default -> service.send("Invalid choice.");
             }
-
-
         } catch (Exception e) {
             LOGGER.severe("Unexpected error : " + e);
             service.send("An error occurred, please try again later.");
