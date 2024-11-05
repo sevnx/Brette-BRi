@@ -34,6 +34,15 @@ public abstract class Protocol {
         }
     }
 
+    public void sendAndClose(String data) {
+        if (out != null) {
+            out.println(this.encode(data) + "[EXIT]");
+        } else {
+            System.err.println("Output stream is not initialized");
+        }
+    }
+
+
     public String read() throws IOException {
         if (in != null) {
             return this.decode(in.readLine());

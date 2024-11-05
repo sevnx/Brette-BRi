@@ -11,14 +11,11 @@ import java.util.logging.Logger;
 public class BriAuth {
     private static Logger LOGGER = Logger.getLogger("Auth");
     private static final List<BriProgrammer> programmers;
-    private static final List<BriAmator> amators;
 
     static {
         try {
             programmers = List.of(
                     new BriProgrammer("admin", "admin", new FtpPathBuilder().host("localhost").port("2121").path("services/")));
-            amators = List.of(
-                    new BriAmator("user", "user"));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -29,7 +26,4 @@ public class BriAuth {
         return programmers.stream().filter(p -> p.getLogin().equals(login) && p.getPassword().equals(password)).findFirst().orElse(null);
     }
 
-    public static BriAmator amatorAuth(String login, String password) {
-        return amators.stream().filter(p -> p.getLogin().equals(login) && p.getPassword().equals(password)).findFirst().orElse(null);
-    }
 }

@@ -18,26 +18,6 @@ public class AmatorComponent implements Component {
         try {
             StringBuilder response = new StringBuilder();
             response.append("Welcome to BRi Launch");
-            response.append(System.lineSeparator());
-            response.append("Please enter your login and password to access the services.");
-            response.append(System.lineSeparator());
-            response.append("Login: ");
-            service.send(response.toString());
-
-            String login = service.read();
-
-            service.send("Password: ");
-            String password = service.read();
-
-            BriAmator amator = BriAuth.amatorAuth(login, password);
-            if (amator == null) {
-                service.send("Incorrect login or password.");
-                service.close();
-            }
-
-            response = new StringBuilder();
-
-            response.append("Welcome " + login + "!");
 
             if (ServiceRegistry.serviceNumber() == 0) {
                 response.append(System.lineSeparator());

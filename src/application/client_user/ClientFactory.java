@@ -7,6 +7,9 @@ public class ClientFactory {
     private static final String DEFAULT_CLIENT_HOST = "localhost";
 
     public static ClientManager createClient(String[] args) throws IOException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("Usage: client <port>");
+        }
         ClientManager clientManager = new ClientManager(DEFAULT_CLIENT_HOST, Integer.parseInt(args[0]));
         System.out.println(clientManager.read());
         return clientManager;

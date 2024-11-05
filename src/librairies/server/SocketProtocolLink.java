@@ -33,6 +33,10 @@ public abstract class SocketProtocolLink implements Runnable {
         this.protocol.send(data);
     }
 
+    public void sendAndClose(String data) throws IOException {
+        this.protocol.sendAndClose(data);
+    }
+
     public void run() {
     }
 
